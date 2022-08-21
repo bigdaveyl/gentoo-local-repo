@@ -30,7 +30,7 @@ SLOT="0"
 
 MYTHPLUGINS="mytharchive mythgame mythnetvision \
 mythweather mythzmserver mythzoneminder mythmusic"
-IUSE="${MYTHPLUGINS} alsa cdda cdr exif +hls ieee1394 libass +opengl raw +theora +vorbis +xml xvid"
+IUSE="${MYTHPLUGINS} alsa cdda cdr exif fftw +hls ieee1394 libass +opengl raw +theora +vorbis +xml xvid"
 
 # Mythnetvision temporarily disabled by upstream - should be fixed soon.
 REQUIRED_USE="
@@ -124,6 +124,7 @@ src_configure() {
 		$(use_enable cdda cdio) \
 		$(use_enable exif) \
 		$(use_enable exif new-exif) \
+		$(use_enable fftw) \
 		$(use_enable opengl) \
 		$(use_enable raw dcraw) \
 		$(use_enable mytharchive) \
@@ -132,7 +133,7 @@ src_configure() {
 		$(use_enable mythweather) \
 		$(use_enable mythzmserver) \
 		$(use_enable mythzoneminder) \
-		$(use_enable mythmusic) 
+		$(use_enable mythmusic)
 }
 
 src_install() {
