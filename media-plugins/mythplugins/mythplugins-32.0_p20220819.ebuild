@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{7,8,9} )
+PYTHON_COMPAT=( python3_{8..10} )
 
 inherit python-single-r1 readme.gentoo-r1
 
@@ -29,7 +29,7 @@ KEYWORDS="~amd64 ~x86"
 SLOT="0"
 
 MYTHPLUGINS="mytharchive mythgame mythnetvision \
-mythweather mythzmserver mythzoneminder mythmusic"
+mythbrowser mythweather mythzmserver mythzoneminder mythmusic"
 IUSE="${MYTHPLUGINS} alsa cdda cdr exif fftw +hls ieee1394 libass +opengl raw +theora +vorbis +xml xvid"
 
 # Mythnetvision temporarily disabled by upstream - should be fixed soon.
@@ -133,7 +133,8 @@ src_configure() {
 		$(use_enable mythweather) \
 		$(use_enable mythzmserver) \
 		$(use_enable mythzoneminder) \
-		$(use_enable mythmusic)
+		$(use_enable mythmusic) \
+		$(use_enable mythbrowser)
 }
 
 src_install() {
