@@ -1,12 +1,10 @@
 # Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-GNOME2_LA_PUNT="yes"
+EAPI=8
 GNOME2_EAUTORECONF="yes"
-VALA_USE_DEPEND="vapigen"
 
-inherit db-use flag-o-matic gnome2 java-pkg-opt-2 vala
+inherit db-use gnome2 java-pkg-opt-2 vala
 
 DESCRIPTION="GNOME database access library"
 HOMEPAGE="https://www.gnome-db.org/"
@@ -52,10 +50,13 @@ RDEPEND="
 	vala? ( dev-libs/libgee:0.8 )
 "
 
-# java dep shouldn't rely on slots, bug #450004
 # TODO: libgee shouldn't be needed at build with USE=-vala, but needs build system fixes - bug 674066
 DEPEND="${RDEPEND}
 	dev-libs/libgee:0.8
+"
+
+# java dep shouldn't rely on slots, bug #450004
+BDEPEND="
 	app-text/yelp-tools
 	dev-util/glib-utils
 	dev-util/gtk-doc-am
@@ -77,8 +78,6 @@ pkg_setup() {
 }
 
 src_prepare() {
-	use berkdb && append-cppflags "-I$(db_includedir)"
-
 	# They need python2
 	sed -e '/SUBDIRS =/ s/trml2html//' \
 		-e '/SUBDIRS =/ s/trml2pdf//' \
@@ -88,8 +87,6 @@ src_prepare() {
 	eapply "${FILESDIR}/${PN}-5.2-my_bool-error.patch"
 	# ... and stop using bool elsewhere too
 	eapply "${FILESDIR}/${PN}-5.2.9-redefine-bool-error.patch"
-
-	eapply "${FILESDIR}/${PN}-5.2-introspection.diff"
 
 	# Prevent file collisions with libgda:4
 	eapply "${FILESDIR}/${PN}-4.99.1-gda-browser-doc-collision.patch"
@@ -110,20 +107,35 @@ src_prepare() {
 			die "mv ${f} failed"
 	done
 
+	# Fix building without introspection.
+	eapply "${FILESDIR}/${PN}-5.2.9-no-introspection.patch"
+
 	gnome2_src_prepare
 	java-pkg-opt-2_src_prepare
-	use vala && vala_src_prepare
 }
 
 src_configure() {
+	local bdbroot bdbinc bdblib
+
+	if use berkdb; then
+		bdbinc=$(db_includedir)
+		bdbroot=${bdbinc%/include/*}
+		bdbinc=${bdbinc#${bdbroot}/}
+		bdblib=$(get_libdir)
+	fi
+
+	use vala && vala_setup
+
 	# Upstream broken configure handling for UI library introspection and vala bindings if passing a choice with use_enable - https://gitlab.gnome.org/GNOME/libgda/issues/158
 	# But if we don't pass an explicit choice, it behaves as we need (only enable them if --enable-ui AND the appropriate --enable-introspection or --enable-vala)
 	gnome2_src_configure \
-		--enable-help \
+		--with-help \
 		--disable-default-binary \
 		--disable-static \
 		--enable-system-sqlite \
-		$(use_with berkdb bdb /usr) \
+		$(use_with berkdb bdb "${bdbroot}") \
+		$(use_with berkdb bdb-includedir-name "${bdbinc}") \
+		$(use_with berkdb bdb-libdir-name "${bdblib}") \
 		$(use_with canvas goocanvas) \
 		$(use_enable debug) \
 		$(use_with firebird firebird /usr) \
