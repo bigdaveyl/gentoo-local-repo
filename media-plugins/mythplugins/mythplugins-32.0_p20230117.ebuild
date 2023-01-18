@@ -10,7 +10,7 @@ inherit python-single-r1 readme.gentoo-r1
 # Grab only the major version number.
 MAJOR_PV=$(ver_cut 1)
 
-MY_COMMIT="44f88ed46834d1a5180c3bd9c1bda95c744b281d"
+MY_COMMIT="e677dd354fa09c944aa3df7f422032acebcb8b20"
 
 DESCRIPTION="Official MythTV plugins"
 HOMEPAGE="https://www.mythtv.org https://github.com/MythTV/mythtv"
