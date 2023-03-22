@@ -5,7 +5,7 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{9..11} )
 
-inherit autotools python-any-r1 toolchain-funcs xdg
+inherit autotools python-any-r1 toolchain-funcs xdg flag-o-matic
 
 if [[ ${PV} = *9999* ]]; then
 	EGIT_REPO_URI="https://github.com/HandBrake/HandBrake.git"
@@ -22,7 +22,7 @@ HOMEPAGE="https://handbrake.fr/ https://github.com/HandBrake/HandBrake"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="+fdk gstreamer gtk numa nvdec nvenc qsv vce x265" # TODO: vce
+IUSE="+fdk gstreamer gtk libdovi numa nvdec nvenc qsv x265" # TODO: vce
 
 REQUIRED_USE="numa? ( x265 )"
 
@@ -47,7 +47,7 @@ RDEPEND="
 	media-libs/x264:=
 	media-libs/zimg
 	media-sound/lame
-	>=media-video/ffmpeg-5.1:0=[postproc,fdk?]
+	>=media-video/ffmpeg-6.0:0=[nvenc?,postproc,qsv?,fdk?]
 	sys-libs/zlib
 	fdk? ( media-libs/fdk-aac:= )
 	gstreamer? (
@@ -71,15 +71,12 @@ RDEPEND="
 		x11-libs/libnotify
 		x11-libs/pango
 	)
+	libdovi? ( media-libs/libdovi )
 	nvdec? ( x11-drivers/nvidia-drivers )
-	nvenc? (
-		media-libs/nv-codec-headers
-		media-video/ffmpeg[nvenc]
-	)
+	nvenc? ( media-libs/nv-codec-headers )
 	qsv? (
 		media-libs/oneVPL
 		media-libs/libva
-		media-libs/intel-mediasdk
 	)
 	x265? ( >=media-libs/x265-3.2:0=[10bit,12bit,numa?] )
 "
@@ -103,11 +100,15 @@ PATCHES=(
 	# Use whichever python is set by portage
 	"${FILESDIR}/${PN}-9999-dont-search-for-python.patch"
 
+	"${FILESDIR}/${PN}-9999-libdovi-link.patch"
+
 	# Fix x265 linkage... again again #730034
 	"${FILESDIR}/${PN}-1.3.3-x265-link.patch"
 )
 
 src_prepare() {
+	use qsv && append-flags "-I/usr/include/vpl"
+	filter-flags "-O2"
 	# Get rid of leftover bundled library build definitions,
 	sed -i 's:.*\(/contrib\|contrib/\).*::g' \
 		"${S}"/make/include/main.defs \
@@ -120,6 +121,7 @@ src_prepare() {
 }
 
 src_configure() {
+
 	tc-export AR RANLIB STRIP
 
 	# Libav was replaced in 1.2 with ffmpeg by default
@@ -130,6 +132,7 @@ src_configure() {
 		--verbose
 		--prefix="${EPREFIX}/usr"
 		--disable-flatpak
+		--disable-vce
 		$(usex !gtk --disable-gtk)
 		--disable-gtk-update-checks
 		--disable-gtk4
@@ -140,9 +143,7 @@ src_configure() {
 		--enable-ffmpeg-aac # Forced on
 		$(use_enable nvenc)
 		$(use_enable nvdec)
-		$(use_enable nvdec)
 		$(use_enable qsv)
-		$(use_enable vce)
 	)
 
 	./configure "${myconfargs[@]}" || die "Configure failed."

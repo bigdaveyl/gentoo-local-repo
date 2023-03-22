@@ -1,0 +1,14 @@
+diff --git a/test/module.defs b/test/module.defs
+index a537983e3..fd578f847 100644
+--- a/test/module.defs
++++ b/test/module.defs
+@@ -47,6 +47,9 @@ endif
+ 
+ TEST.out += $(TEST.c.o)
+ TEST.out += $(TEST.exe)
++ifeq (1,$(FEATURE.libdovi))
++    TEST.GCC.l += dovi
++endif
+ ifeq (1,$(FEATURE.flatpak))
+     TEST.out += $(TEST.metainfo)
+ endif
