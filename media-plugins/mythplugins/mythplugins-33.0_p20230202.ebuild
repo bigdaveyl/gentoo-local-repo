@@ -74,7 +74,6 @@ RDEPEND="
 		=media-tv/mythtv-${MAJOR_PV}*[python]
 		media-video/dvdauthor
 		media-video/mjpegtools[png]
-		media-video/transcode
 		app-cdr/cdrtools
 	)
 	mythgame? (
