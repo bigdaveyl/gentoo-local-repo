@@ -1,0 +1,15 @@
+BDEPEND=virtual/pkgconfig >=dev-vcs/git-1.8.2.1[curl]
+DEFINED_PHASES=configure install postinst postrm preinst prepare unpack
+DEPEND=media-libs/libsdl a52? ( media-libs/a52dec ) aac? ( media-libs/faad2 ) alsa? ( media-libs/alsa-lib ) ffmpeg? ( media-video/ffmpeg:0= ) hidapi? ( dev-libs/hidapi ) http2? ( net-libs/nghttp2 ) jack? ( virtual/jack ) jpeg? ( media-libs/libjpeg-turbo:0= ) jpeg2k? ( media-libs/openjpeg:2 ) lzma? ( app-arch/lzma ) mad? ( media-libs/libmad ) ogg? ( media-libs/libogg ) opengl? ( media-libs/freeglut virtual/glu virtual/opengl ) png? ( media-libs/libpng:0= ) pulseaudio? ( media-sound/pulseaudio ) theora? ( media-libs/libtheora ) truetype? ( media-libs/freetype:2 ) ssl? ( dev-libs/openssl:0= ) vorbis? ( media-libs/libvorbis ) X? ( x11-libs/libXt x11-libs/libX11 x11-libs/libXv x11-libs/libXext ) xml? ( dev-libs/libxml2:2= ) xvid? ( media-libs/xvid ) zlib? ( sys-libs/zlib ) dvb? ( sys-kernel/linux-headers )
+DESCRIPTION=Implementation of the MPEG-4 Systems standard developed from scratch in ANSI C
+EAPI=8
+HOMEPAGE=https://gpac.wp.imt.fr/
+IDEPEND=dev-util/desktop-file-utils x11-misc/shared-mime-info
+INHERIT=toolchain-funcs git-r3 xdg
+IUSE=a52 aac alsa cpu_flags_x86_sse2 debug dvb ffmpeg hidapi http2 ipv6 jack jpeg jpeg2k lzma mad ogg opengl oss png pulseaudio ssl static-libs svg theora truetype vorbis xml xvid X zlib
+LICENSE=GPL-2
+PROPERTIES=live
+RDEPEND=media-libs/libsdl a52? ( media-libs/a52dec ) aac? ( media-libs/faad2 ) alsa? ( media-libs/alsa-lib ) ffmpeg? ( media-video/ffmpeg:0= ) hidapi? ( dev-libs/hidapi ) http2? ( net-libs/nghttp2 ) jack? ( virtual/jack ) jpeg? ( media-libs/libjpeg-turbo:0= ) jpeg2k? ( media-libs/openjpeg:2 ) lzma? ( app-arch/lzma ) mad? ( media-libs/libmad ) ogg? ( media-libs/libogg ) opengl? ( media-libs/freeglut virtual/glu virtual/opengl ) png? ( media-libs/libpng:0= ) pulseaudio? ( media-sound/pulseaudio ) theora? ( media-libs/libtheora ) truetype? ( media-libs/freetype:2 ) ssl? ( dev-libs/openssl:0= ) vorbis? ( media-libs/libvorbis ) X? ( x11-libs/libXt x11-libs/libX11 x11-libs/libXv x11-libs/libXext ) xml? ( dev-libs/libxml2:2= ) xvid? ( media-libs/xvid ) zlib? ( sys-libs/zlib )
+SLOT=0/11
+_eclasses_=toolchain-funcs	14a8ae365191b518fad51caad7a08f3e	multilib	d1408425c7c4a7669b9b17735404b693	git-r3	27e13c09a4c7e4c78ac812f74727e676	xdg-utils	baea6080dd821f5562d715887954c9d3	xdg	4a14c5c24f121e7da66e5aab4a168c6e
+_md5_=57b59975e285e73fa4f1217c31700f67
