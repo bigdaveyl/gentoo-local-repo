@@ -1,8 +1,8 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
-PYTHON_COMPAT=( python3_{8..10} )
+EAPI=8
+PYTHON_COMPAT=( python3_{9..11} )
 
 inherit cmake python-single-r1
 
@@ -13,8 +13,10 @@ if [[ ${PV} == 9999* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/osmocom/gr-iqbal.git"
 else
-	SRC_URI="https://github.com/osmocom/gr-iqbal/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~x86"
+	COMMIT="fbee239a6fb36dd2fb564f6e6a0d393c4bc844db"
+	SRC_URI="https://github.com/osmocom/gr-iqbal/archive/${COMMIT}.tar.gz -> ${P}.tar.gz"
+	S="${WORKDIR}/${PN}-${COMMIT}"
+	KEYWORDS="~amd64 ~arm ~riscv ~x86"
 fi
 
 LICENSE="GPL-3"
@@ -37,5 +39,7 @@ src_configure() {
 
 src_install() {
 	cmake_src_install
+	find  "${D}" -name '__init__.py[co]' -delete || die
 	python_optimize
+	mv "${ED}/usr/share/doc/gr-iqbalance" "${ED}/usr/share/doc/${P}"
 }

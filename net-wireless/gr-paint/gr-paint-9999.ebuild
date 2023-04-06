@@ -1,9 +1,9 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-PYTHON_COMPAT=( python3_{8,9,10} )
+PYTHON_COMPAT=( python3_{9..11} )
 
 if [[ ${PV} == 9999* ]]; then
 	inherit git-r3
@@ -29,18 +29,19 @@ RESTRICT="test"
 
 DEPEND="${PYTHON_DEPS}
 	$(python_gen_cond_dep '
-		dev-libs/boost:=[${PYTHON_USEDEP}]
+		dev-libs/boost:=[python,${PYTHON_USEDEP}]
 	')
 	dev-libs/gmp
 	sci-libs/volk:=
-	=net-wireless/gnuradio-3.10*:=[${PYTHON_SINGLE_USEDEP}]
+	sci-libs/fftw
+	>=net-wireless/gnuradio-3.10:=[${PYTHON_SINGLE_USEDEP}]
+	$(python_gen_cond_dep 'dev-python/pygccxml[${PYTHON_USEDEP}]')
 "
-RDEPEND="${DEPEND}
-	media-gfx/imagemagick
-"
+
+RDEPEND="${DEPEND}"
+
 BDEPEND="
-	dev-lang/swig
-	dev-util/cppunit
+	$(python_gen_cond_dep 'dev-python/pybind11[${PYTHON_USEDEP}]')
 	virtual/pkgconfig
 	doc? ( app-doc/doxygen )
 "
@@ -55,5 +56,7 @@ src_configure() {
 
 src_install() {
 	cmake_src_install
+	find "${D}" -name '*.py[oc]' -delete || die
 	python_optimize
+	mv "${ED}/usr/share/doc/gr-paint" "${ED}/usr/share/doc/${P}"
 }

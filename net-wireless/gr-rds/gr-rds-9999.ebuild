@@ -1,16 +1,17 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-PYTHON_COMPAT=( python3_{8,9,10} )
+PYTHON_COMPAT=( python3_{9..11} )
 
 if [[ ${PV} == 9999* ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/bastibl/${PN}.git"
+	EGIT_REPO_URI="https://github.com/bastibl/${PN}"
+	EGIT_BRANCH="maint-3.10"
 else
 	KEYWORDS="~amd64 ~x86"
-	COMMIT="113b70bc0bfb8dccb2358d571ba64c0d2c90e9b4"
+	COMMIT="f3646d04c138dc3279528808dcf6f847887e4a4f"
 	SRC_URI="https://github.com/bastibl/gr-rds/archive/${COMMIT}.tar.gz -> ${P}.tar.gz"
 	S="${WORKDIR}/${PN}-${COMMIT}"
 fi
@@ -26,7 +27,7 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="${PYTHON_DEPS}
 	$(python_gen_cond_dep '
-		dev-libs/boost:=[${PYTHON_USEDEP}]
+		dev-libs/boost:=[python,${PYTHON_USEDEP}]
 	')
 	=net-wireless/gnuradio-3.10*:0=[${PYTHON_SINGLE_USEDEP}]
 "
