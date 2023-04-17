@@ -10,7 +10,7 @@ inherit python-single-r1 readme.gentoo-r1
 # Grab only the major version number.
 MAJOR_PV=$(ver_cut 1)
 
-MY_COMMIT="44f88ed46834d1a5180c3bd9c1bda95c744b281d"
+MY_COMMIT="51cb10a67855bae82a97ca1995956622b0902021"
 
 DESCRIPTION="Official MythTV plugins"
 HOMEPAGE="https://www.mythtv.org https://github.com/MythTV/mythtv"
@@ -30,7 +30,7 @@ SLOT="0"
 
 MYTHPLUGINS="mytharchive mythgame \
 mythbrowser mythweather mythzmserver mythzoneminder mythmusic"
-IUSE="${MYTHPLUGINS} alsa cdda cdr exif fftw +hls ieee1394 libass +opengl raw +theora +vorbis +xml xvid"
+IUSE="${MYTHPLUGINS} alsa cdda cdr exif +hls ieee1394 libass +opengl raw +theora +vorbis +xml xvid"
 
 # Mythnetvision temporarily disabled by upstream - should be fixed soon.
 REQUIRED_USE="
@@ -74,7 +74,6 @@ RDEPEND="
 		=media-tv/mythtv-${MAJOR_PV}*[python]
 		media-video/dvdauthor
 		media-video/mjpegtools[png]
-		media-video/transcode
 		app-cdr/cdrtools
 	)
 	mythgame? (
@@ -115,7 +114,6 @@ src_configure() {
 		$(use_enable cdda cdio) \
 		$(use_enable exif) \
 		$(use_enable exif new-exif) \
-		$(use_enable fftw) \
 		$(use_enable opengl) \
 		$(use_enable raw dcraw) \
 		$(use_enable mytharchive) \

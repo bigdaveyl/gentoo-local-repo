@@ -104,7 +104,7 @@ RDEPEND="
 	opengl? ( dev-qt/qtopengl:5 )
 	pulseaudio? ( media-sound/pulseaudio )
 	systemd? ( sys-apps/systemd:= )
-	vaapi? ( media-libs/libva:=[opengl] )
+	vaapi? ( media-libs/libva )
 	vdpau? ( x11-libs/libvdpau )
 	vpx? ( media-libs/libvpx:= )
 	x264? (	media-libs/x264:= )
@@ -123,7 +123,7 @@ RDEPEND="
 	xmltv? (
 		dev-perl/XML-LibXML
 		media-tv/xmltv
-	 )
+	)
 	xvid? ( media-libs/xvid )
 	zeroconf? (
 		dev-libs/openssl:=

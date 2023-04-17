@@ -10,7 +10,7 @@ inherit flag-o-matic java-pkg-opt-2 java-ant-2 python-any-r1 qmake-utils readme.
 DESCRIPTION="Open Source DVR and media center hub"
 HOMEPAGE="https://www.mythtv.org https://github.com/MythTV/mythtv"
 if [[ $(ver_cut 3) == "p" ]] ; then
-	MY_COMMIT="44f88ed46834d1a5180c3bd9c1bda95c744b281d"
+	MY_COMMIT="51cb10a67855bae82a97ca1995956622b0902021"
 	SRC_URI="https://github.com/MythTV/mythtv/archive/${MY_COMMIT}.tar.gz -> ${P}.tar.gz"
 	# mythtv and mythplugins are separate builds in the github MythTV project
 	S="${WORKDIR}/mythtv-${MY_COMMIT}/mythtv"
@@ -104,7 +104,7 @@ RDEPEND="
 	opengl? ( dev-qt/qtopengl:5 )
 	pulseaudio? ( media-sound/pulseaudio )
 	systemd? ( sys-apps/systemd:= )
-	vaapi? ( media-libs/libva:=[opengl] )
+	vaapi? ( media-libs/libva )
 	vdpau? ( x11-libs/libvdpau )
 	vpx? ( media-libs/libvpx:= )
 	x264? (	media-libs/x264:= )
@@ -123,7 +123,7 @@ RDEPEND="
 	xmltv? (
 		dev-perl/XML-LibXML
 		media-tv/xmltv
-	 )
+	)
 	xvid? ( media-libs/xvid )
 	zeroconf? (
 		dev-libs/openssl:=
