@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -104,7 +104,7 @@ RDEPEND="
 	opengl? ( dev-qt/qtopengl:5 )
 	pulseaudio? ( media-sound/pulseaudio )
 	systemd? ( sys-apps/systemd:= )
-	vaapi? ( media-libs/libva )
+	vaapi? ( media-libs/libva[opengl] )
 	vdpau? ( x11-libs/libvdpau )
 	vpx? ( media-libs/libvpx:= )
 	x264? (	media-libs/x264:= )
@@ -177,7 +177,7 @@ DOC_CONTENTS="
 Support for metadata lookup changes is added. User configuration required.
 Details at: https://www.mythtv.org/wiki/Metadata_Lookup_Changes_March_2021
 
-Suppport for Python 2.7 is removed.
+Support for Python 2.7 is removed.
 
 If a MYSQL server is installed, a mythtv MySQL user and mythconverg database
 is created if it does not already exist.
