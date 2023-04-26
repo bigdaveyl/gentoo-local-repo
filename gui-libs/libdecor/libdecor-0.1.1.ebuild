@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit meson
+inherit meson-multilib
 
 DESCRIPTION="A client-side decorations library for Wayland client"
 HOMEPAGE="https://gitlab.freedesktop.org/libdecor/libdecor"
@@ -21,10 +21,10 @@ SLOT="0"
 IUSE="+dbus"
 
 DEPEND="
-	>=dev-libs/wayland-1.18
+	>=dev-libs/wayland-1.18[${MULTILIB_USEDEP}]
 	>=dev-libs/wayland-protocols-1.15
-	dbus? ( sys-apps/dbus )
-	x11-libs/pango
-	x11-libs/cairo"
+	dbus? ( sys-apps/dbus[${MULTILIB_USEDEP}] )
+	x11-libs/pango[${MULTILIB_USEDEP}]
+	x11-libs/cairo[${MULTILIB_USEDEP}]"
 RDEPEND="${DEPEND}"
 BDEPEND=">=dev-util/meson-0.47"
