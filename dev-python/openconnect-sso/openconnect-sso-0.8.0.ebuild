@@ -28,7 +28,7 @@ DEPEND="
 	dev-python/cryptography
 	dev-python/exceptiongroup
 	dev-python/idna
-	dev-python/importlib_metadata
+	dev-python/importlib-metadata
 	dev-python/iniconfig
 	dev-python/jaraco-classes
 	dev-python/jeepney
