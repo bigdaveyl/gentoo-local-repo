@@ -27,7 +27,7 @@ DEPEND="
 	dev-python/cryptography
 	dev-python/exceptiongroup
 	dev-python/idna
-	dev-python/importlib_metadata
+	dev-python/importlib-metadata
 	dev-python/iniconfig
 	dev-python/jaraco-classes
 	dev-python/jeepney
@@ -40,7 +40,7 @@ DEPEND="
 	dev-python/pathspec
 	dev-python/platformdirs
 	dev-python/pluggy
-	dev-python/prompt_toolkit
+	dev-python/prompt-toolkit
 	dev-python/pycparser
 	dev-python/pyotp
 	dev-python/pyparsing
@@ -56,6 +56,7 @@ DEPEND="
 	dev-python/tomli
 	dev-python/typing-extensions
 	dev-python/urllib3
+	dev-python/uvloop
 	dev-python/wcwidth
 	dev-python/werkzeug
 	dev-python/zipp

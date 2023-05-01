@@ -41,7 +41,7 @@ DEPEND="
 	dev-python/pathspec
 	dev-python/platformdirs
 	dev-python/pluggy
-	dev-python/prompt_toolkit
+	dev-python/prompt-toolkit
 	dev-python/pycparser
 	dev-python/pyotp
 	dev-python/pyparsing
