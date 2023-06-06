@@ -108,7 +108,7 @@ src_prepare() {
 	done
 
 	# Fix building without introspection.
-	eapply "${FILESDIR}/${PN}-5.2.9-no-introspection.patch"
+	eapply "${FILESDIR}/${PN}-5.2-introspection.diff"
 
 	gnome2_src_prepare
 	java-pkg-opt-2_src_prepare
