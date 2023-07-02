@@ -1,0 +1,30 @@
+diff -NrU5 HandBrake-1.6.1.orig/configure HandBrake-1.6.1/configure
+--- HandBrake-1.6.1.orig/configure	2023-03-13 08:25:53.776723838 +0100
++++ HandBrake-1.6.1/configure	2023-03-13 08:27:08.988094611 +0100
+@@ -12,24 +12,12 @@
+     done
+     return 1
+ }
+ 
+ if ( inpath bash ); then
+-    pp=""
+-    for p in python3 python3.8 python3.7 python3.6 python3.5 python3.4 python3.3 python3.2 python3.1 python2 python2.7 python
+-    do
+-        if ( inpath $p ); then
+-            pp="$p"
+-            break
+-        fi
+-    done
+-    if [ "$pp" != "" ]; then
+-        exec $pp `dirname $0`/make/configure.py "$@"
+-        exit 0
+-    else
+-        echo "ERROR: no suitable version of python found."
+-    fi
++    exec python `dirname $0`/make/configure.py "$@"
++    exit 0
+ else
+     echo "ERROR: bash shell not found."
+ fi
+ 
+ exit 1
