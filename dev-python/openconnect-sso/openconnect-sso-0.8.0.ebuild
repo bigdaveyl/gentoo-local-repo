@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=poetry
-PYTHON_COMPAT=( pypy3 python3_{9..11} )
+PYTHON_COMPAT=( pypy3 python3_{10..12} )
 inherit distutils-r1
 
 DESCRIPTION="Wrapper script for OpenConnect supporting AD/Cisco SSL-VPNs"
@@ -22,7 +22,7 @@ DEPEND="
 	dev-python/black
 	dev-python/certifi
 	dev-python/cffi
-	dev-python/charset_normalizer
+	dev-python/charset-normalizer
 	dev-python/click
 	dev-python/coverage
 	dev-python/cryptography
