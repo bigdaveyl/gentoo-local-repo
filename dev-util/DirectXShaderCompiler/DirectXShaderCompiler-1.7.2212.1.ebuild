@@ -9,9 +9,9 @@ inherit cmake check-reqs python-any-r1
 DESCRIPTION="Microsoft DirectX Shader Compiler which is based on LLVM/Clang"
 HOMEPAGE="https://github.com/microsoft/DirectXShaderCompiler"
 # ToDo: unbundle spirv headers/tools and directx headers
-SPIRV_HEADERS_COMMIT_MAGIC="d13b52222c39a7e9a401b44646f0ca3a640fbd47"
-SPIRV_TOOLS_COMMIT_MAGIC="f36a8d47f738cc612c7dd89f145a15465ab437cd"
-DIRECTX_HEADERS_COMMIT_MAGIC="980971e835876dc0cde415e8f9bc646e64667bf7"
+SPIRV_HEADERS_COMMIT_MAGIC="f1ba373ef03752ee9f6f2b898bea1213f93e1ef2"
+SPIRV_TOOLS_COMMIT_MAGIC="29431859f575633790365a0ac841b27440274f42"
+DIRECTX_HEADERS_COMMIT_MAGIC="3a57ee119e546006914d41470fbdabbc735d80ec"
 SRC_URI="https://github.com/microsoft/DirectXShaderCompiler/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
 https://github.com/KhronosGroup/SPIRV-Headers/archive/${SPIRV_HEADERS_COMMIT_MAGIC}.tar.gz -> DirectXShaderCompiler-headers-${SPIRV_HEADERS_COMMIT_MAGIC}.tar.gz
 https://github.com/KhronosGroup/SPIRV-Tools/archive/${SPIRV_TOOLS_COMMIT_MAGIC}.tar.gz -> DirectXShaderCompiler-tools-${SPIRV_TOOLS_COMMIT_MAGIC}.tar.gz
