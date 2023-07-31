@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{8..10} )
+PYTHON_COMPAT=( python3_{9..11} )
 
 #https://github.com/gnuradio/volk/issues/383
 CMAKE_BUILD_TYPE="None"
