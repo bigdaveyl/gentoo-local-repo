@@ -57,7 +57,6 @@ DEPEND="
 	dev-python/tomli
 	dev-python/typing-extensions
 	dev-python/urllib3
-	dev-python/uvloop
 	dev-python/wcwidth
 	dev-python/werkzeug
 	dev-python/zipp
