@@ -1,9 +1,8 @@
-diff -NrU5 HandBrake-1.6.1.orig/configure HandBrake-1.6.1/configure
---- HandBrake-1.6.1.orig/configure	2023-03-13 08:25:53.776723838 +0100
-+++ HandBrake-1.6.1/configure	2023-03-13 08:27:08.988094611 +0100
-@@ -12,24 +12,12 @@
-     done
-     return 1
+diff --git a/configure b/configure
+index 5c870e1d7..2f5834083 100755
+--- a/configure
++++ b/configure
+@@ -14,20 +14,8 @@ inpath()
  }
  
  if ( inpath bash ); then
@@ -15,7 +14,7 @@ diff -NrU5 HandBrake-1.6.1.orig/configure HandBrake-1.6.1/configure
 -            break
 -        fi
 -    done
--    if [ "$pp" != "" ]; then
+-    if [ pp != "" ]; then
 -        exec $pp `dirname $0`/make/configure.py "$@"
 -        exit 0
 -    else
@@ -26,5 +25,3 @@ diff -NrU5 HandBrake-1.6.1.orig/configure HandBrake-1.6.1/configure
  else
      echo "ERROR: bash shell not found."
  fi
- 
- exit 1

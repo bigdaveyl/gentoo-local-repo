@@ -37,7 +37,7 @@ COMMON_DEP="
 BDEPEND="
 	!bindist? ( =dev-lang/python-3* )
 	doc? ( app-doc/doxygen )
-	dev-util/cmake
+	dev-build/cmake
 	sys-apps/sed
 	virtual/pkgconfig
 "

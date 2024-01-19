@@ -1,20 +1,20 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
-inherit autotools python-any-r1 toolchain-funcs xdg
+inherit autotools edo python-any-r1 toolchain-funcs xdg
 
-if [[ ${PV} = *9999* ]]; then
+if [[ ${PV} == *9999* ]]; then
 	EGIT_REPO_URI="https://github.com/HandBrake/HandBrake.git"
 	inherit git-r3
 else
 	MY_P="HandBrake-${PV}"
 	SRC_URI="https://github.com/HandBrake/HandBrake/releases/download/${PV}/${MY_P}-source.tar.bz2 -> ${P}.tar.bz2"
 	S="${WORKDIR}/${MY_P}"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64 ~arm64 ~x86"
 fi
 
 DESCRIPTION="Open-source, GPL-licensed, multiplatform, multithreaded video transcoder"
@@ -22,32 +22,32 @@ HOMEPAGE="https://handbrake.fr/ https://github.com/HandBrake/HandBrake"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="+fdk gstreamer gtk numa nvenc x265" # TODO: qsv vce
+IUSE="+fdk gstreamer gtk numa nvdec nvenc x265" # TODO: qsv vce
 
 REQUIRED_USE="numa? ( x265 )"
 
 RDEPEND="
-	app-arch/xz-utils
+	>=app-arch/xz-utils-5.2.6
 	dev-libs/jansson:=
-	dev-libs/libxml2
+	>=dev-libs/libxml2-2.10.3
 	media-libs/a52dec
-	>=media-libs/dav1d-0.5.1:=
-	media-libs/libjpeg-turbo:=
-	media-libs/libass:=
-	>=media-libs/libbluray-1.0:=
+	>=media-libs/dav1d-1.0.0:=
+	>=media-libs/libjpeg-turbo-2.1.4:=
+	>=media-libs/libass-0.16.0:=
+	>=media-libs/libbluray-1.3.4:=
 	media-libs/libdvdnav
-	media-libs/libdvdread:=
+	>=media-libs/libdvdread-6.1.3:=
 	media-libs/libsamplerate
 	media-libs/libtheora
 	media-libs/libvorbis
-	>=media-libs/libvpx-1.8:=
+	>=media-libs/libvpx-1.12.0:=
 	media-libs/opus
-	media-libs/speex
+	>=media-libs/speex-1.2.1
 	>=media-libs/svt-av1-1.4.1
-	media-libs/x264:=
-	media-libs/zimg
+	>=media-libs/x264-0.0.20220222:=
+	>=media-libs/zimg-3.0.4
 	media-sound/lame
-	>=media-video/ffmpeg-5.1:=[postproc,fdk?]
+	>=media-video/ffmpeg-5.1.2:=[postproc,fdk?]
 	sys-libs/zlib
 	fdk? ( media-libs/fdk-aac:= )
 	gstreamer? (
@@ -75,14 +75,18 @@ RDEPEND="
 		media-libs/nv-codec-headers
 		media-video/ffmpeg[nvenc]
 	)
-	x265? ( >=media-libs/x265-3.2:0=[10bit,12bit,numa?] )
+	nvdec? (
+		media-libs/nv-codec-headers
+		media-video/ffmpeg[nvenc]
+	)
+	x265? ( >=media-libs/x265-3.5-r2:=[10bit,12bit,numa?] )
 "
 DEPEND="${RDEPEND}"
 # cmake needed for custom script: bug #852701
 BDEPEND="
 	${PYTHON_DEPS}
+	dev-build/cmake
 	dev-lang/nasm
-	dev-util/cmake
 "
 
 PATCHES=(
@@ -130,12 +134,13 @@ src_configure() {
 		$(use_enable numa)
 		$(use_enable fdk fdk-aac)
 		--enable-ffmpeg-aac # Forced on
+		$(use_enable nvdec)
 		$(use_enable nvenc)
 		# TODO: $(use_enable qsv)
 		# TODO: $(use_enable vce)
 	)
 
-	./configure "${myconfargs[@]}" || die "Configure failed."
+	edo ./configure "${myconfargs[@]}"
 }
 
 src_compile() {

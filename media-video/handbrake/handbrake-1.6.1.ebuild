@@ -1,20 +1,20 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
-inherit autotools python-any-r1 toolchain-funcs xdg
+inherit autotools edo python-any-r1 toolchain-funcs xdg
 
-if [[ ${PV} = *9999* ]]; then
+if [[ ${PV} == *9999* ]]; then
 	EGIT_REPO_URI="https://github.com/HandBrake/HandBrake.git"
 	inherit git-r3
 else
 	MY_P="HandBrake-${PV}"
 	SRC_URI="https://github.com/HandBrake/HandBrake/releases/download/${PV}/${MY_P}-source.tar.bz2 -> ${P}.tar.bz2"
 	S="${WORKDIR}/${MY_P}"
-	KEYWORDS="amd64 ~arm64 ~x86"
+	KEYWORDS="amd64 ~arm64 x86"
 fi
 
 DESCRIPTION="Open-source, GPL-licensed, multiplatform, multithreaded video transcoder"
@@ -22,32 +22,32 @@ HOMEPAGE="https://handbrake.fr/ https://github.com/HandBrake/HandBrake"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="fdk gstreamer gtk +libav-aac numa nvdec nvenc x265"
+IUSE="+fdk gstreamer gtk numa nvdec nvenc x265" # TODO: qsv vce
 
-REQUIRED_USE="^^ ( fdk libav-aac )"
+REQUIRED_USE="numa? ( x265 )"
 
-# < ffmpeg-5.1 dep for bug #907406
 RDEPEND="
-	app-arch/xz-utils
+	>=app-arch/xz-utils-5.2.6
 	dev-libs/jansson:=
-	dev-libs/libxml2
+	>=dev-libs/libxml2-2.10.3
 	media-libs/a52dec
-	>=media-libs/dav1d-0.5.1:=
-	media-libs/libjpeg-turbo:=
-	media-libs/libass:=
-	>=media-libs/libbluray-1.0:=
+	>=media-libs/dav1d-1.0.0:=
+	>=media-libs/libjpeg-turbo-2.1.4:=
+	>=media-libs/libass-0.16.0:=
+	>=media-libs/libbluray-1.3.4:=
 	media-libs/libdvdnav
-	media-libs/libdvdread:=
+	>=media-libs/libdvdread-6.1.3:=
 	media-libs/libsamplerate
 	media-libs/libtheora
 	media-libs/libvorbis
-	>=media-libs/libvpx-1.8:=
+	>=media-libs/libvpx-1.12.0:=
 	media-libs/opus
-	media-libs/speex
-	media-libs/x264:=
-	media-libs/zimg
+	>=media-libs/speex-1.2.1
+	>=media-libs/svt-av1-1.4.1
+	>=media-libs/x264-0.0.20220222:=
+	>=media-libs/zimg-3.0.4
 	media-sound/lame
-	media-video/ffmpeg[postproc,fdk?]
+	>=media-video/ffmpeg-5.1.2:=[postproc,fdk?]
 	sys-libs/zlib
 	fdk? ( media-libs/fdk-aac:= )
 	gstreamer? (
@@ -71,16 +71,22 @@ RDEPEND="
 		x11-libs/libnotify
 		x11-libs/pango
 	)
-	nvenc? ( media-libs/nv-codec-headers )
-	nvdec? ( media-libs/nv-codec-headers )
-	x265? ( >=media-libs/x265-3.2:0=[10bit,12bit,numa?] )
+	nvenc? (
+		media-libs/nv-codec-headers
+		media-video/ffmpeg[nvenc]
+	)
+	nvdec? (
+		media-libs/nv-codec-headers
+		media-video/ffmpeg[nvenc]
+	)
+	x265? ( >=media-libs/x265-3.5-r2:=[10bit,12bit,numa?] )
 "
 DEPEND="${RDEPEND}"
 # cmake needed for custom script: bug #852701
 BDEPEND="
 	${PYTHON_DEPS}
+	dev-build/cmake
 	dev-lang/nasm
-	dev-util/cmake
 "
 
 PATCHES=(
@@ -88,14 +94,11 @@ PATCHES=(
 	# It may work this way; if not, we should try to mimic the duplication.
 	"${FILESDIR}/${PN}-9999-remove-dvdnav-dup.patch"
 
-	# Remove faac dependency; TODO: figure out if we need to do this at all.
-	"${FILESDIR}/${PN}-9999-remove-faac-dependency.patch"
-
 	# Detect system tools - bug 738110
 	"${FILESDIR}/${PN}-9999-system-tools.patch"
 
 	# Use whichever python is set by portage
-	"${FILESDIR}/${PN}-1.6.1-dont-search-for-python.patch"
+	"${FILESDIR}/${PN}-9999-dont-search-for-python.patch"
 
 	# Fix x265 linkage... again again #730034
 	"${FILESDIR}/${PN}-1.3.3-x265-link.patch"
@@ -123,20 +126,21 @@ src_configure() {
 		--force
 		--verbose
 		--prefix="${EPREFIX}/usr"
-		--disable-gtk-update-checks
 		--disable-flatpak
-		--disable-gtk4
-		$(use_enable libav-aac ffmpeg-aac)
-		$(use_enable fdk fdk-aac)
 		$(usex !gtk --disable-gtk)
+		--disable-gtk4
 		$(usex !gstreamer --disable-gst)
+		$(use_enable x265)
 		$(use_enable numa)
+		$(use_enable fdk fdk-aac)
+		--enable-ffmpeg-aac # Forced on
 		$(use_enable nvdec)
 		$(use_enable nvenc)
-		$(use_enable x265)
+		# TODO: $(use_enable qsv)
+		# TODO: $(use_enable vce)
 	)
 
-	./configure "${myconfargs[@]}" || die "Configure failed."
+	edo ./configure "${myconfargs[@]}"
 }
 
 src_compile() {
