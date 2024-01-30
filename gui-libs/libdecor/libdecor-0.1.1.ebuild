@@ -27,4 +27,4 @@ DEPEND="
 	x11-libs/pango[${MULTILIB_USEDEP}]
 	x11-libs/cairo[${MULTILIB_USEDEP}]"
 RDEPEND="${DEPEND}"
-BDEPEND=">=dev-util/meson-0.47"
+BDEPEND=">=dev-build/meson-0.47"
