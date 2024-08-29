@@ -4,7 +4,7 @@
 EAPI=8
 
 DISABLE_AUTOFORMATTING="yes"
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit edo flag-o-matic java-pkg-opt-2 java-ant-2 python-any-r1
 inherit qmake-utils readme.gentoo-r1 systemd toolchain-funcs user-info
@@ -12,7 +12,7 @@ inherit qmake-utils readme.gentoo-r1 systemd toolchain-funcs user-info
 DESCRIPTION="Open Source DVR and media center hub"
 HOMEPAGE="https://www.mythtv.org https://github.com/MythTV/mythtv"
 if [[ ${PV} == *_p* ]] ; then
-	MY_COMMIT="d6398e090fce4df92acb7831470134846e5ab38e"
+	MY_COMMIT="c63d023aa8e9326724fc6fd36be3c973f705aa59"
 	SRC_URI="https://github.com/MythTV/mythtv/archive/${MY_COMMIT}.tar.gz -> ${P}.tar.gz"
 	# mythtv and mythplugins are separate builds in the github MythTV project
 	S="${WORKDIR}/mythtv-${MY_COMMIT}/mythtv"
