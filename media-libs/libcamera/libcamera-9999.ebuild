@@ -20,9 +20,8 @@ fi
 LICENSE="LGPL-2.1+"
 SLOT="0"
 
-#IUSE="debug doc drm gnutls gstreamer jpeg libevent qt5 sdl tiff trace udev unwind v4l2"
-IUSE="debug drm gnutls gstreamer jpeg libevent qt5 sdl tiff trace udev unwind v4l2"
-REQUIRED_USE="qt5? ( tiff ) ${PYTHON_REQUIRED_USE}"
+IUSE="debug drm gnutls gstreamer jpeg libevent qt6 sdl tiff trace udev unwind v4l2"
+REQUIRED_USE="qt6? ( tiff ) ${PYTHON_REQUIRED_USE}"
 
 DEPEND="
 	dev-lang/python
@@ -44,11 +43,11 @@ DEPEND="
 		sdl? ( media-libs/libsdl2:= )
 	)
 	media-libs/libepoxy
-	qt5?
+	qt6?
 	(
-		dev-qt/qtcore:5
-		dev-qt/qtgui:5
-		dev-qt/qtwidgets:5
+		dev-qt/qtcore:6
+		dev-qt/qtgui:6
+		dev-qt/qtwidgets:6
 	)
 	tiff? ( media-libs/tiff:= )
 	trace? ( dev-util/lttng-ust:= )
@@ -72,7 +71,7 @@ src_configure() {
 		-Ddocumentation=disabled
 		$(meson_feature libevent cam)
 		$(meson_feature gstreamer)
-		$(meson_feature qt5 qcam)
+		$(meson_feature qt6 qcam)
 		$(meson_feature trace tracing)
 		$(meson_use v4l2)
 	)
