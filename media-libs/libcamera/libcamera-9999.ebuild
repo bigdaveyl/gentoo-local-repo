@@ -45,9 +45,8 @@ DEPEND="
 	media-libs/libepoxy
 	qt6?
 	(
-		dev-qt/qtcore:6
-		dev-qt/qtgui:6
-		dev-qt/qtwidgets:6
+		dev-qt/qtbase:6[gui]
+		dev-qt/qttools:6
 	)
 	tiff? ( media-libs/tiff:= )
 	trace? ( dev-util/lttng-ust:= )
